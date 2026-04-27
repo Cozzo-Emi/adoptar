@@ -20,6 +20,9 @@ class UsuarioUpdate(BaseModel):
     email: Optional[EmailStr] = None
     telefono: Optional[str] = None
 
+class UsuarioLogin(BaseModel):
+    email: EmailStr
+    password: str
 
 class UsuarioResponse(UsuarioBase):
     model_config = ConfigDict(from_attributes=True)
