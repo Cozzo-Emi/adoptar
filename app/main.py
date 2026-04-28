@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import auth
+from app.routers import auth, animales
 from app.database import Base, engine
 
 # Crear tablas (solo para desarrollo)
@@ -13,7 +13,7 @@ app = FastAPI(
 
 # Routers
 app.include_router(auth.router)
-
+app.include_router(animales.router)
 @app.get("/", tags=["Root"])
 def root():
     """Endpoint base para verificar que la API está funcionando."""
