@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-from app.routers import auth, animales,solicitudes
+from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
+from app.routers import auth, animales, solicitudes
 
-# Crear tablas (solo para desarrollo)
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -11,10 +12,19 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Routers
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(auth.router)
 app.include_router(animales.router)
 app.include_router(solicitudes.router)
+
 
 @app.get("/", tags=["Root"])
 def root():
