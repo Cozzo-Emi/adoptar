@@ -48,10 +48,7 @@ adoptar/
 │       ├── animales.py
 │       └── solicitudes.py
 │
-├── .env                     # Variables de entorno (no se sube al repo)
-├── .gitignore
-├── requirements.txt
-└── README.md
+
 ```
 
 ---
@@ -120,46 +117,14 @@ adoptar/
 
 ---
 
-## Correr el proyecto localmente
+## API en producción
 
-> Próximamente — se completará cuando el entorno esté configurado.
+La API está deployada y disponible en:
 
-```bash
-# Clonar el repositorio
-git clone https://github.com/tu-usuario/adoptar.git
-cd adoptar
-
-# Crear entorno virtual
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Instalar dependencias
-pip install -r requirements.txt
-
-# Configurar variables de entorno
-cp .env.example .env
-# Editar .env con tus credenciales
-
-# Correr el servidor
-uvicorn app.main:app --reload
-```
-
-La documentación interactiva estará disponible en `http://localhost:8000/docs`
+🔗 **https://adoptar-tgfr.onrender.com/docs**
 
 ---
 
-## Flujo de ramas (Git Flow)
-
-```
-main
-  └── develop
-        ├── feature/auth
-        ├── feature/animales
-        ├── feature/solicitudes
-        └── feature/upload-imagen
-```
-
----
 
 ## Autor
 
