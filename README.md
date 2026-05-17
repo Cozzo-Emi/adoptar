@@ -48,10 +48,7 @@ adoptar/
 │       ├── animales.py
 │       └── solicitudes.py
 │
-├── .env                     # Variables de entorno (no se sube al repo)
-├── .gitignore
-├── requirements.txt
-└── README.md
+
 ```
 
 ---
@@ -119,6 +116,15 @@ adoptar/
 | PUT | `/solicitudes/{id}` | Admin | Aprueba o rechaza una solicitud |
 
 ---
+
+## API en producción
+
+La API está deployada y disponible en:
+
+🔗 **https://adoptar-tgfr.onrender.com/docs**
+
+---
+
 
 ## Autor
 
