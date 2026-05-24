@@ -16,7 +16,7 @@ from app.services.solicitudes import (
     update_solicitud_estado
 )
 
-from app.core.dependencies import get_current_user, solo_admin
+from app.core.deps import get_current_user, solo_admin
 
 
 router = APIRouter(prefix="/solicitudes", tags=["Solicitudes"])

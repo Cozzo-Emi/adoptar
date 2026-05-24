@@ -1,5 +1,5 @@
 from app.models.usuario import Usuario, UserRole
-from app.services.auth import hash_password, create_access_token
+from app.core.security import hash_password, create_access_token
 from tests.conftest import TestingSessionLocal
 
 
