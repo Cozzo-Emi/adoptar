@@ -22,7 +22,7 @@ from app.services.animales import (
 )
 
 from app.services.cloudinary_service import upload_image
-from app.core.dependencies import solo_admin
+from app.core.deps import solo_admin
 
 
 router = APIRouter(prefix="/animals", tags=["Animals"])
