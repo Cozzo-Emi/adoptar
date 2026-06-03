@@ -22,32 +22,54 @@ AdoptAR conecta refugios y rescatistas con personas interesadas en adoptar masco
 ## Estructura del proyecto
 
 ```
-adoptar/
+AdoptAR/
 ├── app/
 │   ├── __init__.py
 │   ├── main.py              # Punto de entrada, instancia FastAPI
 │   ├── database.py          # Conexión a PostgreSQL
 │   │
+│   ├── core/                # Configuración centralizada
+│   │   ├── __init__.py
+│   │   ├── config.py        # Configuración de entorno (pydantic-settings)
+│   │   ├── security.py      # (hash, verify, token)
+│   │   └── deps.py          # Dependencies 
+│   │
 │   ├── models/              # Tablas de la base de datos (SQLAlchemy)
+│   │   ├── __init__.py
 │   │   ├── usuario.py
 │   │   ├── animal.py
 │   │   └── solicitud.py
 │   │
 │   ├── schemas/             # Validación de datos entrada/salida (Pydantic)
+│   │   ├── __init__.py
 │   │   ├── usuario.py
 │   │   ├── animal.py
 │   │   └── solicitud.py
 │   │
-│   ├── routers/             # Endpoints agrupados por módulo
-│   │   ├── auth.py
-│   │   ├── animales.py
-│   │   └── solicitudes.py
+│   ├── routers/             # Endpoints  por módulo
+│   │   ├── __init__.py
+│   │   ├── auth.py          
+│   │   ├── animales.py     
+│   │   └── solicitudes.py  
 │   │
 │   └── services/            # Lógica de negocio
-│       ├── auth.py
-│       ├── animales.py
-│       └── solicitudes.py
+│       ├── __init__.py
+│       ├── animales.py      
+│       ├── solicitudes.py  
+│       └── cloudinary_service.py 
 │
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py          #  pytest 
+│   ├── test_auth.py
+│   ├── test_animales.py
+│   └── test_solicitudes.py
+│
+├── venv/                    
+├── .env                     
+├── pytest.ini
+├── requirements.txt
+└── README.md
 
 ```
 
