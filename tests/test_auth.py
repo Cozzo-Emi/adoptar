@@ -18,8 +18,8 @@ def test_register_duplicate_email(client):
     }
     client.post("/auth/register", json=payload)
     response = client.post("/auth/register", json=payload)
-    assert response.status_code == 400
-    assert response.json()["detail"] == "Email ya registrado"
+    assert response.status_code == 409
+    assert response.json()["error"]["message"] == "Email ya registrado"
 
 def test_login_success(client):
     client.post("/auth/register", json={
@@ -42,4 +42,4 @@ def test_login_invalid_credentials(client):
         "password": "wrong"
     })
     assert response.status_code == 401
-    assert response.json()["detail"] == "Credenciales inválidas"
+    assert response.json()["error"]["message"] == "Credenciales inválidas"

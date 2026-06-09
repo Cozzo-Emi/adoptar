@@ -74,7 +74,7 @@ def test_create_solicitud_animal_not_found(client):
         json={"id_animal": 9999}
     )
     assert response.status_code == 404
-    assert response.json()["detail"] == "Animal no encontrado"
+    assert response.json()["error"]["message"] == "Animal no encontrado"
 
 
 def test_create_solicitud_duplicate(client):
@@ -93,7 +93,7 @@ def test_create_solicitud_duplicate(client):
         json={"id_animal": animal["id"]}
     )
     assert response.status_code == 400
-    assert response.json()["detail"] == "Ya enviaste una solicitud para este animal"
+    assert response.json()["error"]["message"] == "Ya enviaste una solicitud para este animal"
 
 
 def test_create_solicitud_pending_exists(client):
@@ -113,7 +113,7 @@ def test_create_solicitud_pending_exists(client):
         json={"id_animal": animal["id"]}
     )
     assert response.status_code == 400
-    assert response.json()["detail"] == "Ya existe una solicitud pendiente para este animal"
+    assert response.json()["error"]["message"] == "Ya existe una solicitud pendiente para este animal"
 
 
 def test_mis_solicitudes(client):
@@ -246,7 +246,7 @@ def test_update_solicitud_not_found(client):
         json={"estado": "aprobada"}
     )
     assert response.status_code == 404
-    assert response.json()["detail"] == "Solicitud no encontrada"
+    assert response.json()["error"]["message"] == "Solicitud no encontrada"
 
 
 def test_create_solicitud_post_approval(client):
@@ -272,4 +272,4 @@ def test_create_solicitud_post_approval(client):
         json={"id_animal": animal["id"]}
     )
     assert response.status_code == 400
-    assert response.json()["detail"] == "El animal no está disponible"
+    assert response.json()["error"]["message"] == "El animal no está disponible"

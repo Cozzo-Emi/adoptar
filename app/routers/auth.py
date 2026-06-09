@@ -12,11 +12,6 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
 @router.post("/register", response_model=UsuarioResponse)
 def register(user_data: UsuarioCreate, db: Session = Depends(get_db)):
     """Registra un nuevo usuario como adoptante."""
-    
-    existing_user = db.query(Usuario).filter(Usuario.email == user_data.email).first()
-    
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Email ya registrado")
 
     new_user = Usuario(
         nombre=user_data.nombre,
