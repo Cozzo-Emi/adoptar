@@ -10,7 +10,6 @@ from app.routers import animales
 from app.routers import solicitudes
 
 
-
 app = FastAPI(
     title="AdoptAR API",
     description="API para la gestión de adopción de mascotas",
