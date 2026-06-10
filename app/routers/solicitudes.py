@@ -38,10 +38,7 @@ def crear_solicitud(
             detail="Animal no encontrado"
         )
 
-    try:
-        return create_solicitud(db, current_user.id, animal)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    return create_solicitud(db, current_user.id, animal)
 
 
 @router.get("/", response_model=list[SolicitudResponse])
@@ -79,7 +76,4 @@ def actualizar_estado_solicitud(
             detail="Solicitud no encontrada"
         )
 
-    try:
-        return update_solicitud_estado(db, solicitud, data.estado)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    return update_solicitud_estado(db, solicitud, data.estado)

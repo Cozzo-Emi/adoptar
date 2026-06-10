@@ -12,9 +12,12 @@ def create_animal(db: Session, data: AnimalCreate) -> Animal:
     return animal
 
 
-def get_animals(db: Session) -> list[Animal]:
-    """Obtiene todos los animales activos."""
-    return db.query(Animal).filter(Animal.is_active.is_(True)).all()
+def get_animals(db: Session, page: int = 1, size: int = 10) -> dict:
+    """Obtiene animales activos con paginación."""
+    query = db.query(Animal).filter(Animal.is_active.is_(True))
+    total = query.count()
+    items = query.offset((page - 1) * size).limit(size).all()
+    return {"items": items, "total": total}
 
 
 def get_animal_by_id(db: Session, animal_id: int) -> Animal | None:

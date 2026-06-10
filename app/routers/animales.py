@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Form, File, UploadFile
+from fastapi import APIRouter, Depends, HTTPException, Query, status, Form, File, UploadFile
 from sqlalchemy.orm import Session
 from typing import Optional
+from math import ceil
 
 from app.database import get_db
 
@@ -12,6 +13,7 @@ from app.schemas.animal import (
     AnimalResponse,
     AnimalUpdate
 )
+from app.schemas.pagination import PaginatedResponse, PaginationMeta
 
 from app.services.animales import (
     create_animal,
@@ -28,10 +30,23 @@ from app.core.deps import solo_admin
 router = APIRouter(prefix="/animals", tags=["Animals"])
 
 
-@router.get("/", response_model=list[AnimalResponse])
-def list_animals(db: Session = Depends(get_db)):
-    """Obtiene todos los animales activos."""
-    return get_animals(db)
+@router.get("/", response_model=PaginatedResponse[AnimalResponse])
+def list_animals(
+    page: int = Query(1, ge=1),
+    size: int = Query(10, ge=1, le=100),
+    db: Session = Depends(get_db),
+):
+    """Obtiene animales activos con paginación."""
+    data = get_animals(db, page=page, size=size)
+    return PaginatedResponse(
+        items=data["items"],
+        pagination=PaginationMeta(
+            page=page,
+            size=size,
+            total=data["total"],
+            pages=ceil(data["total"] / size) if data["total"] > 0 else 0,
+        ),
+    )
 
 
 @router.get("/{animal_id}", response_model=AnimalResponse)
@@ -64,10 +79,7 @@ def create_animal_endpoint(
     image_url: Optional[str] = None
 
     if imagen:
-        try:
-            image_url = upload_image(imagen)
-        except ValueError as e:
-            raise HTTPException(status_code=400, detail=str(e))
+        image_url = upload_image(imagen)
 
     animal_data = AnimalCreate(
         nombre=nombre,
