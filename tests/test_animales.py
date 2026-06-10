@@ -38,7 +38,10 @@ def create_user_token():
 def test_list_animals_empty(client):
     response = client.get("/animals/")
     assert response.status_code == 200
-    assert response.json() == []
+    data = response.json()
+    assert data["items"] == []
+    assert data["pagination"]["total"] == 0
+    assert data["pagination"]["pages"] == 0
 
 
 def test_create_animal_admin(client):
@@ -111,4 +114,4 @@ def test_delete_animal_soft(client):
     )
     assert delete.status_code == 204
     response = client.get("/animals/")
-    assert response.json() == []
+    assert response.json()["items"] == []

@@ -1,4 +1,3 @@
-# app/services/solicitudes.py
 from sqlalchemy.orm import Session
 
 from app.models.solicitud import Solicitud, RequestStatus
