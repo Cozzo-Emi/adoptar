@@ -8,6 +8,7 @@ from app.core.error_handlers import register_error_handlers
 from app.routers import auth
 from app.routers import animales
 from app.routers import solicitudes
+from app.routers.stats import router as stats_router
 
 
 app = FastAPI(
@@ -37,6 +38,7 @@ register_error_handlers(app)
 app.include_router(auth.router)
 app.include_router(animales.router)
 app.include_router(solicitudes.router)
+app.include_router(stats_router)
 
 
 @app.get("/", tags=["Root"])
