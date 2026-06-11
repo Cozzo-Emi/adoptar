@@ -34,10 +34,20 @@ router = APIRouter(prefix="/animals", tags=["Animals"])
 def list_animals(
     page: int = Query(1, ge=1),
     size: int = Query(10, ge=1, le=100),
+    especie: str | None = Query(None),
+    estado: str | None = Query(None),
+    nombre: str | None = Query(None),
     db: Session = Depends(get_db),
 ):
-    """Obtiene animales activos con paginación."""
-    data = get_animals(db, page=page, size=size)
+    """Obtiene animales activos con paginación y filtros opcionales."""
+    data = get_animals(
+        db,
+        page=page,
+        size=size,
+        especie=especie,
+        estado=estado,
+        nombre=nombre,
+    )
     return PaginatedResponse(
         items=data["items"],
         pagination=PaginationMeta(
