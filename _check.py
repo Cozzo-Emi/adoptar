@@ -1,0 +1,1 @@
+from app.database import SessionLocal; from app.models.usuario import Usuario; db = SessionLocal(); users = db.query(Usuario).all(); [print(f'id={u.id} nombre={u.nombre} email={u.email} rol={u.rol.value}') for u in users]; db.close()

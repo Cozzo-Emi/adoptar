@@ -20,6 +20,10 @@ class UsuarioUpdate(BaseModel):
     email: Optional[EmailStr] = None
     telefono: Optional[str] = None
 
+class CambiarRolRequest(BaseModel):
+    rol: UserRole
+
+
 class UsuarioLogin(BaseModel):
     email: EmailStr
     password: str
