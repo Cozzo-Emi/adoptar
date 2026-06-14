@@ -26,3 +26,8 @@ class Usuario(Base):
         onupdate=lambda: datetime.now(timezone.utc)
     )
     solicitudes = relationship("Solicitud", back_populates="usuario")
+    recuperacion_password: Mapped["RecuperacionPassword | None"] = relationship(
+        "RecuperacionPassword",
+        back_populates="usuario",
+        uselist=False,
+    )

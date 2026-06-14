@@ -2,9 +2,21 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+
 from app.models.usuario import Usuario, UserRole
-from app.schemas.usuario import UsuarioCreate, UsuarioResponse, UsuarioLogin
+from app.schemas.usuario import (
+    UsuarioCreate,
+    UsuarioResponse,
+    UsuarioLogin,
+    RecuperarRequest,
+    RestablecerRequest,
+)
 from app.core.security import hash_password, verify_password, create_access_token
+from app.services.recuperacion_password import (
+    solicitar_recuperacion,
+    restablecer_password,
+)
+from app.services.email_service import send_recovery_email
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -46,3 +58,28 @@ def login(user_data: UsuarioLogin, db: Session = Depends(get_db)):
         "access_token": token,
         "token_type": "bearer"
     }
+
+
+@router.post("/recuperar")
+def solicitar_recuperacion_endpoint(
+    body: RecuperarRequest,
+    db: Session = Depends(get_db),
+):
+    """Envía un token de recuperación al email del usuario."""
+    token = solicitar_recuperacion(db, body.email)
+    if token:
+        send_recovery_email(body.email, token)
+
+    return {"message": "Revisa tu bandeja de entrada si tu cuenta está asociada."}
+
+
+@router.post("/restablecer")
+def restablecer_password_endpoint(
+    body: RestablecerRequest,
+    db: Session = Depends(get_db),
+):
+    """Restablece la contraseña usando un token de recuperación."""
+    ok = restablecer_password(db, body.token, body.password)
+    if not ok:
+        raise HTTPException(status_code=400, detail="Token no existe")
+    return {"message": "Contraseña restablecida correctamente."}
