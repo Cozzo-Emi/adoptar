@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import BaseModel, EmailStr, ConfigDict, Field
 from datetime import datetime
 from typing import Optional
 
@@ -22,6 +22,15 @@ class UsuarioUpdate(BaseModel):
 
 class CambiarRolRequest(BaseModel):
     rol: UserRole
+
+
+class RecuperarRequest(BaseModel):
+    email: EmailStr
+
+
+class RestablecerRequest(BaseModel):
+    token: str
+    password: str = Field(min_length=8)
 
 
 class UsuarioLogin(BaseModel):
