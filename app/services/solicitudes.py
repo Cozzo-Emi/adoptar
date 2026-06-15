@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from app.models.solicitud import Solicitud, RequestStatus
 from app.models.animal import Animal, AnimalStatus
@@ -10,7 +10,6 @@ def create_solicitud(db: Session, user_id: int, animal: Animal) -> Solicitud:
     if animal.estado != AnimalStatus.disponible:
         raise ValueError("El animal no está disponible")
 
-    # Evita duplicados por usuario/animal (antes de que falle la DB)
     duplicate = db.query(Solicitud).filter(
         Solicitud.id_usuario == user_id,
         Solicitud.id_animal == animal.id
@@ -19,7 +18,6 @@ def create_solicitud(db: Session, user_id: int, animal: Animal) -> Solicitud:
     if duplicate:
         raise ValueError("Ya enviaste una solicitud para este animal")
 
-    # Solo una solicitud pendiente por animal
     existing = db.query(Solicitud).filter(
         Solicitud.id_animal == animal.id,
         Solicitud.estado == RequestStatus.pendiente
@@ -41,19 +39,26 @@ def create_solicitud(db: Session, user_id: int, animal: Animal) -> Solicitud:
     return solicitud
 
 
+def _base_query(db: Session):
+    return db.query(Solicitud).options(
+        selectinload(Solicitud.usuario),
+        selectinload(Solicitud.animal),
+    )
+
+
 def get_solicitudes_by_user(db: Session, user_id: int) -> list[Solicitud]:
     """Devuelve las solicitudes de un usuario."""
-    return db.query(Solicitud).filter(Solicitud.id_usuario == user_id).all()
+    return _base_query(db).filter(Solicitud.id_usuario == user_id).all()
 
 
 def get_all_solicitudes(db: Session) -> list[Solicitud]:
     """Devuelve todas las solicitudes (admin)."""
-    return db.query(Solicitud).all()
+    return _base_query(db).all()
 
 
 def get_solicitud_by_id(db: Session, solicitud_id: int) -> Solicitud | None:
     """Busca una solicitud por ID."""
-    return db.query(Solicitud).filter(Solicitud.id == solicitud_id).first()
+    return _base_query(db).filter(Solicitud.id == solicitud_id).first()
 
 
 def update_solicitud_estado(

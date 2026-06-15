@@ -1,12 +1,17 @@
 from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 from app.models.solicitud import RequestStatus
+from app.schemas.usuario import UsuarioResponse
+from app.schemas.animal import AnimalResponse
+
 
 class SolicitudCreate(BaseModel):
     id_animal: int
 
+
 class SolicitudUpdate(BaseModel):
     estado: RequestStatus
+
 
 class SolicitudResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -16,3 +21,8 @@ class SolicitudResponse(BaseModel):
     id_animal: int
     created_at: datetime
     updated_at: datetime | None = None
+
+
+class SolicitudDetalleResponse(SolicitudResponse):
+    usuario: UsuarioResponse
+    animal: AnimalResponse

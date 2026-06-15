@@ -6,7 +6,12 @@ from app.database import get_db
 from app.models.usuario import Usuario
 from app.models.animal import Animal
 
-from app.schemas.solicitud import SolicitudCreate, SolicitudResponse, SolicitudUpdate
+from app.schemas.solicitud import (
+    SolicitudCreate,
+    SolicitudResponse,
+    SolicitudDetalleResponse,
+    SolicitudUpdate,
+)
 
 from app.services.solicitudes import (
     create_solicitud,
@@ -41,21 +46,21 @@ def crear_solicitud(
     return create_solicitud(db, current_user.id, animal)
 
 
-@router.get("/", response_model=list[SolicitudResponse])
+@router.get("/", response_model=list[SolicitudDetalleResponse])
 def listar_solicitudes(
     db: Session = Depends(get_db),
     admin: Usuario = Depends(solo_admin)
 ):
-    """Devuelve todas las solicitudes (admin)."""
+    """Devuelve todas las solicitudes con detalles de usuario y animal (admin)."""
     return get_all_solicitudes(db)
 
 
-@router.get("/mias", response_model=list[SolicitudResponse])
+@router.get("/mias", response_model=list[SolicitudDetalleResponse])
 def mis_solicitudes(
     db: Session = Depends(get_db),
     current_user: Usuario = Depends(get_current_user)
 ):
-    """Devuelve las solicitudes del usuario autenticado."""
+    """Devuelve las solicitudes del usuario autenticado con detalles."""
     return get_solicitudes_by_user(db, current_user.id)
 
 
