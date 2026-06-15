@@ -9,10 +9,15 @@ logger = logging.getLogger(__name__)
 
 def send_recovery_email(email: str, token: str) -> bool:
     if not settings.SMTP_HOST:
+        reset_link = f"{settings.FRONTEND_URL}/#/restablecer?token={token}"
+        print(f"\n{'='*50}")
+        print(f"Enlace de recuperación para {email}:")
+        print(reset_link)
+        print(f"{'='*50}\n")
         logger.info("SMTP no configurado. Token para %s: %s", email, token)
         return True
 
-    reset_link = f"http://localhost:5173/restablecer?token={token}"
+    reset_link = f"{settings.FRONTEND_URL}/#/restablecer?token={token}"
     body = (
         f"Usá este enlace para restablecer tu contraseña:\n\n"
         f"{reset_link}\n\n"
