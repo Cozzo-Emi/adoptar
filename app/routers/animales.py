@@ -106,11 +106,16 @@ def create_animal_endpoint(
 @router.patch("/{animal_id}", response_model=AnimalResponse)
 def update_animal_endpoint(
     animal_id: int,
-    data: AnimalUpdate,
+    nombre: Optional[str] = Form(None),
+    especie: Optional[str] = Form(None),
+    raza: Optional[str] = Form(None),
+    edad: Optional[int] = Form(None),
+    descripcion: Optional[str] = Form(None),
+    imagen: Optional[UploadFile] = File(None),
     db: Session = Depends(get_db),
     admin: Usuario = Depends(solo_admin)
 ):
-    """Actualiza un animal existente (admin)."""
+    """Actualiza un animal existente (admin). Acepta imagen opcional."""
     animal = get_animal_by_id(db, animal_id)
 
     if not animal or not animal.is_active:
@@ -119,7 +124,21 @@ def update_animal_endpoint(
             detail="Animal no encontrado"
         )
 
-    return update_animal(db, animal, data)
+    update_data = AnimalUpdate()
+    if nombre is not None:
+        update_data.nombre = nombre
+    if especie is not None:
+        update_data.especie = especie
+    if raza is not None:
+        update_data.raza = raza
+    if edad is not None:
+        update_data.edad = edad
+    if descripcion is not None:
+        update_data.descripcion = descripcion
+    if imagen:
+        update_data.imagen = upload_image(imagen)
+
+    return update_animal(db, animal, update_data)
 
 
 @router.delete("/{animal_id}", status_code=status.HTTP_204_NO_CONTENT)
