@@ -15,6 +15,12 @@ def _hash_token(token: str) -> str:
     return hashlib.sha256(token.encode()).hexdigest()
 
 
+def _is_expired(expires_at: datetime) -> bool:
+    if expires_at.tzinfo is None:
+        expires_at = expires_at.replace(tzinfo=timezone.utc)
+    return expires_at < datetime.now(timezone.utc)
+
+
 def solicitar_recuperacion(db: Session, email: str) -> str | None:
     usuario = db.query(Usuario).filter(Usuario.email == email).first()
     if not usuario:
@@ -48,7 +54,7 @@ def restablecer_password(db: Session, token: str, nueva_password: str) -> bool:
         RecuperacionPassword.token_hash == token_hash
     ).first()
 
-    if not recuperacion or recuperacion.expires_at < datetime.now(timezone.utc):
+    if not recuperacion or _is_expired(recuperacion.expires_at):
         return False
 
     usuario = recuperacion.usuario
