@@ -137,15 +137,6 @@ AdoptAR/
 | GET | `/solicitudes/mias` | Adoptante | Lista las solicitudes del usuario autenticado |
 | PUT | `/solicitudes/{id}` | Admin | Aprueba o rechaza una solicitud |
 
----
-
-## API en producción
-
-La API está deployada y disponible en:
-
-🔗 **https://adoptar-tgfr.onrender.com/docs**
-
----
 
 
 ## Autor
