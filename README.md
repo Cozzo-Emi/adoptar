@@ -137,6 +137,9 @@ AdoptAR/
 | GET | `/solicitudes/mias` | Adoptante | Lista las solicitudes del usuario autenticado |
 | PUT | `/solicitudes/{id}` | Admin | Aprueba o rechaza una solicitud |
 
+## 📚 Documentación
+
+[📄 LEER DOCUMENTACION DEL PROYECTO](AdoptAR_Uso_IA.pdf)
 
 
 ## Autor
